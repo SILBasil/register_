@@ -106,13 +106,37 @@ npm run build
    VITE_API_URL=https://your-backend-url.vercel.app/api
    ```
 
-### Option 2: Full-Stack Deployment
+### Option 2: Deploy Backend Separately
 
-For full-stack deployment, you'll need to deploy the backend separately:
+If you want to deploy the backend API separately (recommended for production):
 
-1. **Backend Deployment** (Railway, Render, or similar)
-2. **Frontend Deployment** (Vercel)
-3. **Update API URLs** in the frontend code
+1. **Choose a backend hosting platform:**
+   - **Railway** (recommended for Node.js)
+   - **Render**
+   - **Vercel Serverless Functions**
+   - **Heroku**
+
+2. **Backend Environment Variables:**
+   For Railway/Render/Vercel backend deployment, set these environment variables:
+   ```
+   DATABASE_URL=mysql://username:password@host:port/database?ssl-mode=REQUIRED
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
+   NEXTAUTH_SECRET=your-nextauth-secret
+   NEXTAUTH_URL=https://your-backend-domain.com
+   NODE_ENV=production
+   PORT=5000
+   ```
+
+3. **SSL Certificate for TiDB:**
+   - **For Railway/Render:** Upload `isrgrootx1.pem` as a file or use TiDB's built-in SSL
+   - **For Vercel:** Use TiDB's SSL without custom certificate (Vercel handles SSL automatically)
+   - **Alternative:** Use TiDB's connection without SSL certificate for cloud deployments
+
+4. **Update Frontend:**
+   After backend deployment, update `VITE_API_URL` in Vercel to point to your backend URL.
+
+### Option 3: Full-Stack Deployment
 
 ## 🔧 API Endpoints
 
