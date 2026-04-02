@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Application {
+  id               Int      @id @default(autoincrement())
+  idNumber         String   @unique @db.VarChar(20)
+  firstName        String   @db.VarChar(100)
+  lastName         String   @db.VarChar(100)
+  email            String   @db.VarChar(100)
+  phone            String   @db.VarChar(20)
+  dateOfBirth      DateTime @db.Date
+  gender           Gender
+  address          String   @db.Text
+  emergencyContact String?  @db.VarChar(200)
+  educationLevel   EducationLevel
+  schoolName       String   @db.VarChar(200)
+  gpa              Decimal  @db.Decimal(3, 2)
+  graduationYear   Int
+  entranceExam     String?  @db.VarChar(200)
+  specialization   String?  @db.VarChar(100)
+  achievements     String   @db.Text
+  studyMode        StudyMode
+  selectedTracks   Json
+  intake           Intake
+  motivation       String   @db.Text
+  experience       String?  @db.Text
+  submittedAt      DateTime @default(now()) @db.Timestamp(0)
+
+  @@index([email])
+  @@index([idNumber])
+  @@map("applications")
+}
+
+model Institution {
+  id      Int    @id @default(autoincrement())
+  nameEn  String @unique @db.VarChar(200)
+  nameTh  String @db.VarChar(200)
+  country String @db.VarChar(50)
+
+  @@index([country])
+  @@map("institutions")
+}
+
+model MedicalTrack {
+  id            Int     @id @default(autoincrement())
+  trackId       String  @unique @db.VarChar(50)
+  nameEn        String  @db.VarChar(100)
+  nameTh        String  @db.VarChar(100)
+  descriptionEn String? @db.VarChar(300)
+  descriptionTh String? @db.VarChar(300)
+
+  @@map("medical_tracks")
+}
+
+enum Gender {
+  male
+  female
+  other
+  prefer_not_to_say @map("prefer-not-to-say")
+}
+
+enum EducationLevel {
+  high_school @map("high-school")
+  diploma
+  bachelor
+  master
+  doctorate
+}
+
+enum StudyMode {
+  full_time @map("full-time")
+  part_time @map("part-time")
+  online
+  hybrid
+}
+
+enum Intake {
+  may_2026      @map("may-2026")
+  august_2026   @map("august-2026")
+  november_2026 @map("november-2026")
+  january_2027  @map("january-2027")
+}
